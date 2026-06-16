@@ -32,30 +32,34 @@ function drawCup(x,y,color,inverted){
   ${x-halfB},${y+H}
   `;
 
-  let poly = document.createElementNS("http://www.w3.org/2000/svg","polygon");
-  poly.setAttribute("points",pts);
-  poly.setAttribute("fill",COLORS[color]);
-  poly.setAttribute("stroke","#000");
+  const poly = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+  poly.setAttribute("points", pts);
+  poly.setAttribute("fill", COLORS[color]);
+  poly.setAttribute("stroke", "#000");
+  poly.setAttribute("stroke-width", "2");
+
   svg.appendChild(poly);
 }
 
 function render(question){
-  svg.innerHTML="";
+  svg.innerHTML = "";
 
-  function draw(node,x,y){
+  const CENTER_X = 200;   // FIXED SVG SPACE
+  const START_Y = 50;
+
+  function draw(node, x, y){
     drawCup(x,y,node.color,node.inverted);
 
-    let offset = 120;
     let nextY = y + H + 10;
+    let offset = 90;
 
     node.children.forEach((c,i)=>{
-      let nx = x + (i===0?-offset:offset);
+      let nx = x + (i === 0 ? -offset : offset);
       draw(c,nx,nextY);
     });
   }
 
-  let startX = window.innerWidth/2;
   question.roots.forEach((r,i)=>{
-    draw(r,startX + i*200 - 200,80);
+    draw(r, CENTER_X + i*120 - 60, START_Y);
   });
 }
