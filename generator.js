@@ -1,4 +1,4 @@
-const COLORS = ["red","yellow","blue","orange","green","purple"];
+const CUP_COLORS = ["red","yellow","blue","orange","green","purple"];
 
 function shuffle(a){
   return a.sort(()=>Math.random()-0.5);
@@ -6,7 +6,7 @@ function shuffle(a){
 
 function pickCups(){
   const n = Math.floor(Math.random()*6)+1;
-  return shuffle([...COLORS]).slice(0,n);
+  return shuffle([...CUP_COLORS]).slice(0,n);
 }
 
 // simple tree generator
