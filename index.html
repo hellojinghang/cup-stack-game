@@ -19,7 +19,7 @@
 
   <div class="stage-wrap">
     <div class="stage" id="stage" aria-label="Cup stacking question">
-      <svg id="board" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet"></svg>
+      <svg id="board" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="error" id="errorBox"></div>
     </div>
   </div>
@@ -75,7 +75,66 @@ function cupPoints(cx,cy,orientation,scale=1){const top=CUP.topWidth*scale,botto
 function drawUnit(group,unit,cx,cy,scale=1){unit.colors.forEach((color,i)=>{const s=scale*(1-i*.16),shift=CUP.height*scale*i*.09,y=unit.orientation==="normal"?cy+shift:cy-shift;group.appendChild(svgEl("polygon",{points:cupPoints(cx,y,unit.orientation,s),fill:color.hex,stroke:"#111827","stroke-width":Math.max(1.5,CUP.stroke*scale),"stroke-linejoin":"round"}))})}
 function blockDimensions(block){const pitchX=76,pitchY=72,cupW=90,cupH=74;if(block.type==="standalone")return{w:cupW,h:cupH};if(block.type==="tower")return{w:cupW,h:cupH+(block.units.length-1)*pitchY};const maxPositions=Math.max(...block.levels.map(level=>level.units.length));return{w:cupW+(maxPositions-1)*pitchX,h:cupH+(block.levels.length-1)*pitchY}}
 function renderBlock(group,block,cx,topY,scale){const pitchX=76*scale,pitchY=72*scale;if(block.type==="standalone"){drawUnit(group,block.units[0],cx,topY,scale);return}if(block.type==="tower"){const bottomY=topY+(block.units.length-1)*pitchY;block.units.forEach((unit,i)=>drawUnit(group,unit,cx,bottomY-i*pitchY,scale));return}const bottomY=topY+(block.levels.length-1)*pitchY;block.levels.forEach((level,li)=>{const y=bottomY-li*pitchY,startX=cx-((level.units.length-1)*pitchX)/2;level.units.forEach((unit,pi)=>drawUnit(group,unit,startX+pi*pitchX,y,scale))})}
-function renderCurrent(){if(!deck.length)return;const q=deck[currentIndex];board.innerHTML="";errorBox.classList.remove("show");errorBox.textContent="";board.appendChild(svgEl("rect",{x:0,y:0,width:900,height:620,fill:"#fff"}));const dims=q.blocks.map(blockDimensions),gap=50,naturalW=dims.reduce((s,d)=>s+d.w,0)+gap*(q.blocks.length-1),naturalH=Math.max(...dims.map(d=>d.h));let scale=Math.min(1.35,780/Math.max(naturalW,1),500/Math.max(naturalH,1));scale=Math.max(.58,scale);const totalW=dims.reduce((s,d)=>s+d.w*scale,0)+gap*scale*(q.blocks.length-1);let cursorX=450-totalW/2;q.blocks.forEach((block,i)=>{const d=dims[i],blockW=d.w*scale,blockH=d.h*scale,cx=cursorX+blockW/2,topY=510-blockH,g=svgEl("g");renderBlock(g,block,cx,topY,scale);board.appendChild(g);cursorX+=blockW+gap*scale});qno.textContent=`#${currentIndex+1} / ${deck.length}`}
+function renderCurrent(){
+  if(!deck.length)return;
+
+  const q=deck[currentIndex];
+
+  board.innerHTML="";
+  errorBox.classList.remove("show");
+  errorBox.textContent="";
+
+  /*
+    CONTENT-AWARE SVG SCALING
+    -------------------------
+    Render at natural cup size, then make the SVG viewBox hug the
+    generated formation. The browser automatically enlarges that
+    viewBox to use as much of the available stage as possible.
+
+    Result:
+    - one cup becomes large
+    - tall towers maximize height
+    - wide pyramids / multi-block puzzles maximize width
+    - no clipping because a small proportional margin is retained
+  */
+  const dims=q.blocks.map(blockDimensions);
+  const gap=30;
+
+  const contentW=
+    dims.reduce((sum,d)=>sum+d.w,0)+
+    gap*Math.max(0,q.blocks.length-1);
+
+  const contentH=Math.max(...dims.map(d=>d.h));
+
+  const padX=Math.max(10,contentW*0.045);
+  const padY=Math.max(10,contentH*0.055);
+
+  let cursorX=padX;
+
+  q.blocks.forEach((block,i)=>{
+    const d=dims[i];
+
+    // Center shorter blocks vertically beside taller blocks.
+    const cx=cursorX+d.w/2;
+    const topY=padY+(contentH-d.h)/2;
+
+    const g=svgEl("g");
+    renderBlock(g,block,cx,topY,1);
+    board.appendChild(g);
+
+    cursorX+=d.w+gap;
+  });
+
+  const viewW=contentW+padX*2;
+  const viewH=contentH+padY*2;
+
+  board.setAttribute(
+    "viewBox",
+    `0 0 ${viewW.toFixed(2)} ${viewH.toFixed(2)}`
+  );
+
+  qno.textContent=`#${currentIndex+1} / ${deck.length}`;
+}
 function setStatus(message){status.textContent=message;clearTimeout(setStatus.timer);setStatus.timer=setTimeout(()=>{status.textContent="Swipe left = next · swipe right = previous · keyboard ← previous / → next"},1400)}
 function safeGenerateDeck(){try{errorBox.classList.remove("show");generateDeck()}catch(err){console.error(err);errorBox.textContent="Generation error: "+err.message;errorBox.classList.add("show")}}
 function nextQuestion(){if(currentIndex<deck.length-1){currentIndex++;renderCurrent()}else setStatus("Last question in this set.")}

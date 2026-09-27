@@ -1,18 +1,21 @@
-Cup Stack Challenge v1.2
+Cup Stack Challenge v1.3
 
-Changes:
-- Full-screen responsive layout; the page itself no longer needs vertical scrolling.
-- Swipe left = next question; swipe right = previous question.
-- Keyboard Left Arrow = previous; Right Arrow = next.
-- Configurable question count from 1 to 100.
-- Questions are generated as a finite deck, so previous questions are preserved.
-- Same-orientation cups are never separate vertical stack positions. They are nested instead.
-- Question counter shows current / total, e.g. #7 / 20.
+NEW IN v1.3
+- Cups now use substantially more of the available puzzle area.
+- SVG scaling is content-aware rather than based on a fixed 900 x 620 canvas.
+- A single cup grows large automatically.
+- Tall towers maximize available height.
+- Wide pyramids and multi-block questions maximize available width.
+- A small automatic margin prevents cups from touching or clipping at the edges.
+- Existing v1.2 navigation and physical-generation rules are retained.
 
-GitHub Pages deployment:
-1. Replace your old index.html with the new index.html.
-2. Commit the change.
-3. If GitHub Pages is already enabled, it will redeploy automatically.
-4. After the Actions deployment is green, hard refresh the site.
+UPDATE GITHUB PAGES
+1. Unzip this file.
+2. Replace your repository's existing index.html with this index.html.
+3. Commit the change.
+4. Wait for the GitHub Pages deployment / Actions job to show a green check.
+5. Hard-refresh:
+   Windows: Ctrl + Shift + R
+   Mac: Command + Shift + R
 
-No backend, database, paid API, package manager, or external library is required.
+The app remains completely static and free to host on GitHub Pages.
