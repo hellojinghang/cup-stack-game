@@ -6,32 +6,16 @@
   <meta name="theme-color" content="#f6f7fb">
   <title>Cup Stack Challenge</title>
   <style>
-    :root{--bg:#f6f7fb;--panel:#fff;--text:#1f2937;--muted:#6b7280;--line:#d1d5db;--accent:#111827;--shadow:0 10px 30px rgba(0,0,0,.08)}
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-    body{min-height:100vh;overscroll-behavior:none}
-    .app{min-height:100vh;display:flex;flex-direction:column}
-    header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    h1{font-size:18px;margin:0;font-weight:800}.qno{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-    .stage-wrap{padding:0 12px;flex:1;display:flex}
-    .stage{flex:1;min-height:56vh;background:var(--panel);border-radius:20px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;touch-action:pan-y;user-select:none;cursor:grab}
-    .stage:active{cursor:grabbing}
-    svg{width:100%;height:100%;min-height:56vh;display:block}
-    .controls{padding:12px 12px 20px}.modes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-    button{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;padding:10px 8px;font-weight:700;font-size:13px}
-    button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .hint{text-align:center;color:var(--muted);font-size:12px;margin-top:10px}
-    .manual{display:none;margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
-    .manual.show{display:block}.row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin:10px 0}.row label{font-size:13px;font-weight:700}.row input[type="range"]{width:150px}.row .value{min-width:24px;text-align:right;color:var(--muted);font-weight:700}
-    .manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toggle{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700}
-    .new-btn{width:100%;margin-top:10px;background:var(--accent);color:#fff;border-color:var(--accent);padding:12px}
-    .error{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center;color:#991b1b;background:#fff5f5;font-weight:700}.error.show{display:flex}
-    @media(max-width:540px){button{font-size:11px;padding:9px 4px}.manual-grid{grid-template-columns:1fr}.row input[type="range"]{width:130px}}
-  </style>
+:root{--bg:#f6f7fb;--panel:#fff;--text:#1f2937;--muted:#6b7280;--line:#d1d5db;--accent:#111827;--shadow:0 10px 30px rgba(0,0,0,.08)}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}body{height:100dvh}.app{width:100%;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}header{padding:clamp(6px,1.3vh,12px) 14px 6px;display:flex;align-items:center;justify-content:space-between;gap:12px}h1{font-size:clamp(14px,2vw,18px);margin:0;font-weight:800}.qno{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}.stage-wrap{min-height:0;padding:0 10px;display:flex}.stage{flex:1;min-width:0;min-height:0;background:var(--panel);border-radius:16px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;touch-action:pan-y;user-select:none;cursor:grab}.stage:active{cursor:grabbing}svg{width:100%;height:100%;min-width:0;min-height:0;display:block}.controls{padding:8px 10px max(8px,env(safe-area-inset-bottom));max-height:38dvh;overflow:auto;overscroll-behavior:contain}.top-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.modes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}button,input{font:inherit}button{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:9px;padding:7px 6px;font-weight:750;font-size:11px;cursor:pointer}button.active{background:var(--accent);color:#fff;border-color:var(--accent)}.deck-control{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-weight:750}.deck-control input{width:62px;border:1px solid var(--line);border-radius:8px;padding:6px 7px;background:#fff;color:var(--text)}.deck-control button{background:var(--accent);color:#fff;border-color:var(--accent)}.status{text-align:center;color:var(--muted);font-size:10px;margin-top:5px;min-height:13px}.manual{display:none;margin-top:7px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px;box-shadow:var(--shadow)}.manual.show{display:block}.manual-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;align-items:center}.setting{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;min-width:0}.setting label,.toggle{font-size:11px;font-weight:750}.setting input[type="range"]{width:min(110px,22vw)}.value{color:var(--muted);font-weight:800;min-width:20px;text-align:right;font-size:11px}.toggle{display:flex;gap:6px;align-items:center}.manual-actions{margin-top:6px;display:flex;justify-content:flex-end}.manual-actions button{background:var(--accent);color:#fff;border-color:var(--accent)}.error{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center;color:#991b1b;background:#fff5f5;font-weight:700}.error.show{display:flex}
+@media(max-width:700px){.top-controls{grid-template-columns:1fr}.deck-control{justify-content:center}.manual-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:460px){.controls{padding-left:7px;padding-right:7px}.manual-grid{grid-template-columns:1fr}.setting input[type="range"]{width:42vw}button{font-size:9px;padding:7px 3px}}
+@media(max-height:620px){header{padding-top:4px;padding-bottom:4px}.controls{max-height:34dvh;padding-top:5px}button{padding-top:5px;padding-bottom:5px}.status{margin-top:3px}}
+</style>
 </head>
 <body>
 <div class="app">
-  <header><h1>Cup Stack Challenge</h1><div class="qno" id="qno">#001</div></header>
+  <header><h1>Cup Stack Challenge</h1><div class="qno" id="qno">#1 / 20</div></header>
 
   <div class="stage-wrap">
     <div class="stage" id="stage" aria-label="Cup stacking question">
@@ -41,452 +25,70 @@
   </div>
 
   <div class="controls">
+  <div class="top-controls">
     <div class="modes">
-      <button data-mode="easy">Easy</button>
-      <button data-mode="medium">Medium</button>
-      <button data-mode="hard">Hard</button>
-      <button data-mode="random" class="active">Random</button>
-      <button data-mode="manual">Manual</button>
+      <button data-mode="easy">Easy</button><button data-mode="medium">Medium</button><button data-mode="hard">Hard</button><button data-mode="random" class="active">Random</button><button data-mode="manual">Manual</button>
     </div>
-
-    <div class="manual" id="manualPanel">
-      <div class="row"><label for="cupCount">Cups used</label><div style="display:flex;align-items:center;gap:8px"><input id="cupCount" type="range" min="1" max="6" value="4"><span class="value" id="cupCountVal">4</span></div></div>
-      <div class="row"><label for="blockCount">Number of blocks</label><div style="display:flex;align-items:center;gap:8px"><input id="blockCount" type="range" min="1" max="4" value="2"><span class="value" id="blockCountVal">2</span></div></div>
-      <div class="row"><label for="maxLevels">Maximum pyramid levels</label><div style="display:flex;align-items:center;gap:8px"><input id="maxLevels" type="range" min="1" max="3" value="3"><span class="value" id="maxLevelsVal">3</span></div></div>
-      <div class="manual-grid">
-        <label class="toggle"><input id="allowPyramids" type="checkbox" checked> Allow pyramids</label>
-        <label class="toggle"><input id="allowNesting" type="checkbox" checked> Allow nesting</label>
-      </div>
-      <button class="new-btn" id="manualGenerate">Generate with these settings</button>
+    <div class="deck-control">
+      <label for="questionCount">Questions</label><input id="questionCount" type="number" min="1" max="100" step="1" value="20"><button id="newSet">New Set</button>
     </div>
-
-    <div class="hint">Swipe or drag left/right on the puzzle for the next question.</div>
   </div>
+  <div class="manual" id="manualPanel">
+    <div class="manual-grid">
+      <div class="setting"><label for="cupCount">Cups used</label><div style="display:flex;align-items:center;gap:6px"><input id="cupCount" type="range" min="1" max="6" value="4"><span class="value" id="cupCountVal">4</span></div></div>
+      <div class="setting"><label for="blockCount">Blocks</label><div style="display:flex;align-items:center;gap:6px"><input id="blockCount" type="range" min="1" max="4" value="2"><span class="value" id="blockCountVal">2</span></div></div>
+      <div class="setting"><label for="maxLevels">Max pyramid levels</label><div style="display:flex;align-items:center;gap:6px"><input id="maxLevels" type="range" min="1" max="3" value="3"><span class="value" id="maxLevelsVal">3</span></div></div>
+      <label class="toggle"><input id="allowPyramids" type="checkbox" checked> Allow pyramids</label><label class="toggle"><input id="allowNesting" type="checkbox" checked> Allow nesting</label>
+    </div>
+    <div class="manual-actions"><button id="manualGenerate">Apply Manual Settings</button></div>
+  </div>
+  <div class="status" id="status">Swipe left = next · swipe right = previous · keyboard ← previous / → next</div>
 </div>
-
+</div>
 <script>
 (() => {
-  "use strict";
-
-  const SVG_NS="http://www.w3.org/2000/svg";
-
-  const CUP_COLORS=[
-    {name:"red",hex:"#e53935"},
-    {name:"yellow",hex:"#fdd835"},
-    {name:"blue",hex:"#1e88e5"},
-    {name:"orange",hex:"#fb8c00"},
-    {name:"green",hex:"#43a047"},
-    {name:"purple",hex:"#8e24aa"}
-  ];
-
-  // Normal cup = wide opening on top, narrow base at bottom.
-  const CUP={topWidth:80,bottomWidth:40,height:70,stroke:3};
-
-  const board=document.getElementById("board");
-  const stage=document.getElementById("stage");
-  const qno=document.getElementById("qno");
-  const errorBox=document.getElementById("errorBox");
-  const manualPanel=document.getElementById("manualPanel");
-
-  let questionNumber=1;
-  let currentMode="random";
-  let dragStartX=null;
-
-  const presets={
-    easy:{minCups:1,maxCups:3,maxBlocks:3,maxLevels:2,allowPyramids:true,allowNesting:false},
-    medium:{minCups:2,maxCups:5,maxBlocks:4,maxLevels:2,allowPyramids:true,allowNesting:true},
-    hard:{minCups:3,maxCups:6,maxBlocks:6,maxLevels:3,allowPyramids:true,allowNesting:true}
-  };
-
-  function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-  function choose(a){return a[randInt(0,a.length-1)]}
-  function shuffle(a){
-    a=[...a];
-    for(let i=a.length-1;i>0;i--){
-      const j=randInt(0,i);
-      [a[i],a[j]]=[a[j],a[i]];
-    }
-    return a;
-  }
-
-  function modeSettings(){
-    if(currentMode==="random"){
-      return {...presets[choose(["easy","medium","hard"])]};
-    }
-    if(currentMode==="manual"){
-      const cups=Number(document.getElementById("cupCount").value);
-      return {
-        minCups:cups,maxCups:cups,
-        exactBlocks:Math.min(cups,Number(document.getElementById("blockCount").value)),
-        maxLevels:Number(document.getElementById("maxLevels").value),
-        allowPyramids:document.getElementById("allowPyramids").checked,
-        allowNesting:document.getElementById("allowNesting").checked
-      };
-    }
-    return {...presets[currentMode]};
-  }
-
-  function positivePartition(total,parts){
-    if(parts===1) return [total];
-    const cuts=[];
-    while(cuts.length<parts-1){
-      const c=randInt(1,total-1);
-      if(!cuts.includes(c)) cuts.push(c);
-    }
-    cuts.sort((a,b)=>a-b);
-    const pts=[0,...cuts,total],out=[];
-    for(let i=1;i<pts.length;i++) out.push(pts[i]-pts[i-1]);
-    return out;
-  }
-
-  function makeUnit(colors,orientation){
-    return {type:"unit",colors:[...colors],orientation};
-  }
-
-  function pyramidRecipe(cupCount,maxLevels){
-    const recipes=[];
-
-    // 2-level pyramid has 2 positions on the lower level and 1 on top.
-    // Equal nesting depth is enforced across each individual level.
-    // depth choices are capped at 2 in pyramids for clarity/physical reliability.
-    if(maxLevels>=2){
-      for(let lowerDepth=1;lowerDepth<=2;lowerDepth++){
-        for(let topDepth=1;topDepth<=2;topDepth++){
-          if(2*lowerDepth+topDepth===cupCount){
-            recipes.push({
-              sizes:[2,1],
-              depths:[lowerDepth,topDepth]
-            });
-          }
-        }
-      }
-    }
-
-    // Full 3-level classic pyramid consumes exactly 6 cups.
-    if(maxLevels>=3 && cupCount===6){
-      recipes.push({sizes:[3,2,1],depths:[1,1,1]});
-    }
-
-    return recipes.length ? choose(recipes) : null;
-  }
-
-  function buildPyramid(colors,maxLevels){
-    const recipe=pyramidRecipe(colors.length,maxLevels);
-    if(!recipe) return null;
-
-    let k=0;
-    const levels=[]; // bottom -> top
-    for(let li=0;li<recipe.sizes.length;li++){
-      const orientation=Math.random()<.5?"normal":"inverted";
-      const units=[];
-      for(let p=0;p<recipe.sizes[li];p++){
-        const nested=[];
-        for(let d=0;d<recipe.depths[li];d++) nested.push(colors[k++]);
-        units.push(makeUnit(nested,orientation));
-      }
-      levels.push({
-        orientation,
-        nestingDepth:recipe.depths[li],
-        units
-      });
-    }
-    return {type:"pyramid",levels};
-  }
-
-  function splitNestedGroups(colors,maxDepth){
-    const groups=[];
-    let i=0;
-    while(i<colors.length){
-      const remaining=colors.length-i;
-      let depth=1;
-      if(maxDepth>1 && remaining>=2 && Math.random()<.32){
-        depth=randInt(2,Math.min(maxDepth,remaining));
-      }
-      groups.push(colors.slice(i,i+depth));
-      i+=depth;
-    }
-    return groups;
-  }
-
-  function buildNonPyramidBlock(colors,allowNesting){
-    if(colors.length===1){
-      return {
-        type:"standalone",
-        units:[makeUnit(colors,Math.random()<.5?"normal":"inverted")]
-      };
-    }
-
-    const groups=allowNesting ? splitNestedGroups(colors,Math.min(3,colors.length)) : colors.map(c=>[c]);
-    const units=groups.map(group=>makeUnit(group,Math.random()<.5?"normal":"inverted"));
-    return {type:"tower",units};
-  }
-
-  function buildBlock(colors,settings){
-    // Pyramid is considered only when every cup assigned to THIS block can be used.
-    if(settings.allowPyramids && colors.length>=3 && Math.random()<.60){
-      const p=buildPyramid(colors,settings.maxLevels);
-      if(p) return p;
-    }
-    return buildNonPyramidBlock(colors,settings.allowNesting);
-  }
-
-  function generateQuestion(){
-    const settings=modeSettings();
-    const cupCount=randInt(settings.minCups,settings.maxCups);
-    const selected=shuffle(CUP_COLORS).slice(0,cupCount);
-
-    const blockCount=settings.exactBlocks
-      ? Math.min(settings.exactBlocks,cupCount)
-      : randInt(1,Math.min(settings.maxBlocks,cupCount));
-
-    const allocations=shuffle(positivePartition(cupCount,blockCount));
-    const shuffledColors=shuffle(selected);
-    const blocks=[];
-    let cursor=0;
-
-    for(const allocation of allocations){
-      const colors=shuffledColors.slice(cursor,cursor+allocation);
-      cursor+=allocation;
-      blocks.push(buildBlock(colors,settings));
-    }
-
-    const q={selected,blockCount,blocks};
-    validateQuestion(q);
-    return q;
-  }
-
-  function allUnits(q){
-    const out=[];
-    q.blocks.forEach(b=>{
-      if(b.type==="standalone"||b.type==="tower"){
-        out.push(...b.units);
-      }else if(b.type==="pyramid"){
-        b.levels.forEach(level=>out.push(...level.units));
-      }
-    });
-    return out;
-  }
-
-  function validateQuestion(q){
-    if(q.blocks.length!==q.blockCount) throw new Error("Generated block count does not match requested block count.");
-
-    const selected=q.selected.map(c=>c.name);
-    const used=[];
-
-    allUnits(q).forEach(unit=>{
-      if(!["normal","inverted"].includes(unit.orientation)) throw new Error("Invalid cup orientation.");
-      if(!unit.colors.length) throw new Error("Empty cup unit.");
-      used.push(...unit.colors.map(c=>c.name));
-    });
-
-    if(used.length!==selected.length) throw new Error("Not every selected cup was used exactly once.");
-    if(new Set(used).size!==used.length) throw new Error("A cup color was repeated.");
-    if(selected.some(name=>!used.includes(name))) throw new Error("A selected cup is missing.");
-
-    q.blocks.forEach(block=>{
-      if(block.type!=="pyramid") return;
-
-      // Number of positions may stay the same or reduce upwards; never increase.
-      for(let i=1;i<block.levels.length;i++){
-        if(block.levels[i].units.length>block.levels[i-1].units.length){
-          throw new Error("Pyramid becomes wider toward the top.");
-        }
-      }
-
-      block.levels.forEach(level=>{
-        if(new Set(level.units.map(u=>u.orientation)).size!==1){
-          throw new Error("Cups on the same pyramid level must share the same orientation.");
-        }
-        if(new Set(level.units.map(u=>u.colors.length)).size!==1){
-          throw new Error("Nested groups on the same pyramid level must have equal nesting depth.");
-        }
-      });
-    });
-
-    return true;
-  }
-
-  function svgEl(name,attrs={}){
-    const e=document.createElementNS(SVG_NS,name);
-    Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));
-    return e;
-  }
-
-  function cupPoints(cx,cy,orientation,scale=1){
-    const top=CUP.topWidth*scale;
-    const bottom=CUP.bottomWidth*scale;
-    const h=CUP.height*scale;
-
-    const pts=orientation==="normal"
-      ? [[cx-top/2,cy],[cx+top/2,cy],[cx+bottom/2,cy+h],[cx-bottom/2,cy+h]]
-      : [[cx-bottom/2,cy],[cx+bottom/2,cy],[cx+top/2,cy+h],[cx-top/2,cy+h]];
-
-    return pts.map(p=>p.join(",")).join(" ");
-  }
-
-  function drawUnit(group,unit,cx,cy,scale=1){
-    // Draw outside -> inside so every selected color stays visible.
-    unit.colors.forEach((color,i)=>{
-      const s=scale*(1-i*.18);
-      const shift=CUP.height*scale*i*.10;
-      const y=unit.orientation==="normal" ? cy+shift : cy-shift;
-
-      group.appendChild(svgEl("polygon",{
-        points:cupPoints(cx,y,unit.orientation,s),
-        fill:color.hex,
-        stroke:"#111827",
-        "stroke-width":Math.max(1.5,CUP.stroke*scale),
-        "stroke-linejoin":"round"
-      }));
-    });
-  }
-
-  function blockDimensions(block){
-    const pitchX=76;
-    const pitchY=72;
-    const cupW=90;
-    const cupH=74;
-
-    if(block.type==="standalone") return {w:cupW,h:cupH};
-    if(block.type==="tower") return {w:cupW,h:cupH+(block.units.length-1)*pitchY};
-
-    const maxPositions=Math.max(...block.levels.map(l=>l.units.length));
-    return {
-      w:cupW+(maxPositions-1)*pitchX,
-      h:cupH+(block.levels.length-1)*pitchY
-    };
-  }
-
-  function renderBlock(group,block,cx,topY,scale){
-    const pitchX=76*scale;
-    const pitchY=72*scale;
-
-    if(block.type==="standalone"){
-      drawUnit(group,block.units[0],cx,topY,scale);
-      return;
-    }
-
-    if(block.type==="tower"){
-      // First unit is the bottom unit.
-      const bottomY=topY+(block.units.length-1)*pitchY;
-      block.units.forEach((unit,i)=>{
-        drawUnit(group,unit,cx,bottomY-i*pitchY,scale);
-      });
-      return;
-    }
-
-    // Pyramid levels are stored bottom -> top.
-    const bottomY=topY+(block.levels.length-1)*pitchY;
-    block.levels.forEach((level,li)=>{
-      const y=bottomY-li*pitchY;
-      const startX=cx-((level.units.length-1)*pitchX)/2;
-      level.units.forEach((unit,pi)=>{
-        drawUnit(group,unit,startX+pi*pitchX,y,scale);
-      });
-    });
-  }
-
-  function render(q){
-    board.innerHTML="";
-    errorBox.classList.remove("show");
-    errorBox.textContent="";
-
-    board.appendChild(svgEl("rect",{x:0,y:0,width:900,height:620,fill:"#fff"}));
-
-    const dims=q.blocks.map(blockDimensions);
-    const gap=50;
-    const naturalW=dims.reduce((s,d)=>s+d.w,0)+gap*(q.blocks.length-1);
-    const naturalH=Math.max(...dims.map(d=>d.h));
-
-    let scale=Math.min(1.35,780/Math.max(naturalW,1),470/Math.max(naturalH,1));
-    scale=Math.max(.62,scale);
-
-    const totalW=dims.reduce((s,d)=>s+d.w*scale,0)+gap*scale*(q.blocks.length-1);
-    let cursorX=450-totalW/2;
-
-    q.blocks.forEach((block,i)=>{
-      const d=dims[i];
-      const blockW=d.w*scale;
-      const blockH=d.h*scale;
-      const cx=cursorX+blockW/2;
-      const topY=500-blockH;
-
-      const g=svgEl("g");
-      renderBlock(g,block,cx,topY,scale);
-      board.appendChild(g);
-
-      cursorX+=blockW+gap*scale;
-    });
-
-    qno.textContent="#"+String(questionNumber).padStart(3,"0");
-  }
-
-  function safeNewQuestion(){
-    try{
-      render(generateQuestion());
-    }catch(err){
-      console.error(err);
-      errorBox.textContent="Generation error: "+err.message;
-      errorBox.classList.add("show");
-    }
-  }
-
-  function nextQuestion(){
-    questionNumber++;
-    safeNewQuestion();
-  }
-
-  document.querySelectorAll("[data-mode]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll("[data-mode]").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-      currentMode=btn.dataset.mode;
-      manualPanel.classList.toggle("show",currentMode==="manual");
-      questionNumber++;
-      safeNewQuestion();
-    });
-  });
-
-  function bindRange(id,outId){
-    const input=document.getElementById(id);
-    const output=document.getElementById(outId);
-    const refresh=()=>{output.textContent=input.value};
-    input.addEventListener("input",refresh);
-    refresh();
-  }
-
-  bindRange("cupCount","cupCountVal");
-  bindRange("blockCount","blockCountVal");
-  bindRange("maxLevels","maxLevelsVal");
-
-  document.getElementById("cupCount").addEventListener("input",e=>{
-    const blocks=document.getElementById("blockCount");
-    blocks.max=e.target.value;
-    if(Number(blocks.value)>Number(e.target.value)) blocks.value=e.target.value;
-    document.getElementById("blockCountVal").textContent=blocks.value;
-  });
-
-  document.getElementById("manualGenerate").addEventListener("click",()=>{
-    questionNumber++;
-    safeNewQuestion();
-  });
-
-  // Pointer events support both finger swipe and mouse drag.
-  stage.addEventListener("pointerdown",e=>{
-    dragStartX=e.clientX;
-    if(stage.setPointerCapture) stage.setPointerCapture(e.pointerId);
-  });
-
-  stage.addEventListener("pointerup",e=>{
-    if(dragStartX===null) return;
-    const dx=e.clientX-dragStartX;
-    dragStartX=null;
-    if(Math.abs(dx)>=50) nextQuestion();
-  });
-
-  stage.addEventListener("pointercancel",()=>{dragStartX=null});
-
-  safeNewQuestion();
+"use strict";
+const SVG_NS="http://www.w3.org/2000/svg";
+const CUP_COLORS=[{name:"red",hex:"#e53935"},{name:"yellow",hex:"#fdd835"},{name:"blue",hex:"#1e88e5"},{name:"orange",hex:"#fb8c00"},{name:"green",hex:"#43a047"},{name:"purple",hex:"#8e24aa"}];
+const CUP={topWidth:80,bottomWidth:40,height:70,stroke:3};
+const board=document.getElementById("board"),stage=document.getElementById("stage"),qno=document.getElementById("qno"),status=document.getElementById("status"),errorBox=document.getElementById("errorBox"),manualPanel=document.getElementById("manualPanel"),questionCountInput=document.getElementById("questionCount");
+let currentMode="random",deck=[],currentIndex=0,dragStartX=null;
+const presets={easy:{minCups:1,maxCups:3,maxBlocks:3,maxLevels:2,allowPyramids:true,allowNesting:false},medium:{minCups:2,maxCups:5,maxBlocks:4,maxLevels:2,allowPyramids:true,allowNesting:true},hard:{minCups:3,maxCups:6,maxBlocks:6,maxLevels:3,allowPyramids:true,allowNesting:true}};
+const randInt=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const choose=a=>a[randInt(0,a.length-1)];
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=randInt(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+function questionCount(){const raw=Math.floor(Number(questionCountInput.value)||20);const n=Math.max(1,Math.min(100,raw));questionCountInput.value=n;return n}
+function modeSettings(){if(currentMode==="random")return {...presets[choose(["easy","medium","hard"])]};if(currentMode==="manual"){const cups=Number(document.getElementById("cupCount").value);return{minCups:cups,maxCups:cups,exactBlocks:Math.min(cups,Number(document.getElementById("blockCount").value)),maxLevels:Number(document.getElementById("maxLevels").value),allowPyramids:document.getElementById("allowPyramids").checked,allowNesting:document.getElementById("allowNesting").checked}}return {...presets[currentMode]}}
+function positivePartition(total,parts){if(parts===1)return[total];const cuts=[];while(cuts.length<parts-1){const c=randInt(1,total-1);if(!cuts.includes(c))cuts.push(c)}cuts.sort((a,b)=>a-b);const pts=[0,...cuts,total],out=[];for(let i=1;i<pts.length;i++)out.push(pts[i]-pts[i-1]);return out}
+const makeUnit=(colors,orientation)=>({type:"unit",colors:[...colors],orientation});
+function pyramidRecipe(cupCount,maxLevels,allowNesting){const recipes=[];const maxDepth=allowNesting?2:1;if(maxLevels>=2){for(let lowerDepth=1;lowerDepth<=maxDepth;lowerDepth++){for(let topDepth=1;topDepth<=maxDepth;topDepth++){if(2*lowerDepth+topDepth===cupCount)recipes.push({sizes:[2,1],depths:[lowerDepth,topDepth]})}}}if(maxLevels>=3&&cupCount===6)recipes.push({sizes:[3,2,1],depths:[1,1,1]});return recipes.length?choose(recipes):null}
+function buildPyramid(colors,maxLevels,allowNesting){const recipe=pyramidRecipe(colors.length,maxLevels,allowNesting);if(!recipe)return null;let k=0;const levels=[];for(let li=0;li<recipe.sizes.length;li++){const orientation=Math.random()<.5?"normal":"inverted",units=[];for(let p=0;p<recipe.sizes[li];p++){const nested=[];for(let d=0;d<recipe.depths[li];d++)nested.push(colors[k++]);units.push(makeUnit(nested,orientation))}levels.push({orientation,nestingDepth:recipe.depths[li],units})}return{type:"pyramid",levels}}
+function randomNestedDepths(total,allowNesting){if(!allowNesting)return Array(total).fill(1);const positions=randInt(1,total);return positivePartition(total,positions)}
+function buildNonPyramidBlock(colors,allowNesting){if(colors.length===1)return{type:"standalone",units:[makeUnit(colors,Math.random()<.5?"normal":"inverted")]};const depths=randomNestedDepths(colors.length,allowNesting);let orientation=Math.random()<.5?"normal":"inverted",cursor=0;const units=[];for(const depth of depths){const nested=colors.slice(cursor,cursor+depth);cursor+=depth;units.push(makeUnit(nested,orientation));orientation=orientation==="normal"?"inverted":"normal"}return{type:units.length===1?"standalone":"tower",units}}
+function buildBlock(colors,settings){if(settings.allowPyramids&&colors.length>=3&&Math.random()<.60){const p=buildPyramid(colors,settings.maxLevels,settings.allowNesting);if(p)return p}return buildNonPyramidBlock(colors,settings.allowNesting)}
+function generateQuestion(){const settings=modeSettings(),cupCount=randInt(settings.minCups,settings.maxCups),selected=shuffle(CUP_COLORS).slice(0,cupCount);const blockCount=settings.exactBlocks?Math.min(settings.exactBlocks,cupCount):randInt(1,Math.min(settings.maxBlocks,cupCount));const allocations=shuffle(positivePartition(cupCount,blockCount)),shuffledColors=shuffle(selected),blocks=[];let cursor=0;for(const allocation of allocations){const colors=shuffledColors.slice(cursor,cursor+allocation);cursor+=allocation;blocks.push(buildBlock(colors,settings))}const q={selected,blockCount,blocks};validateQuestion(q);return q}
+function allUnits(q){const out=[];q.blocks.forEach(block=>{if(block.type==="standalone"||block.type==="tower")out.push(...block.units);else block.levels.forEach(level=>out.push(...level.units))});return out}
+function validateQuestion(q){if(q.blocks.length!==q.blockCount)throw new Error("Generated block count does not match requested block count.");const selected=q.selected.map(c=>c.name),used=[];allUnits(q).forEach(unit=>{if(!["normal","inverted"].includes(unit.orientation))throw new Error("Invalid cup orientation.");if(!unit.colors.length)throw new Error("Empty cup unit.");used.push(...unit.colors.map(c=>c.name))});if(used.length!==selected.length)throw new Error("Not every selected cup was used exactly once.");if(new Set(used).size!==used.length)throw new Error("A cup color was repeated.");if(selected.some(name=>!used.includes(name)))throw new Error("A selected cup is missing.");q.blocks.forEach(block=>{if(block.type==="tower"){for(let i=1;i<block.units.length;i++)if(block.units[i].orientation===block.units[i-1].orientation)throw new Error("Same-orientation cups were stacked instead of nested.")}if(block.type==="pyramid"){for(let i=1;i<block.levels.length;i++)if(block.levels[i].units.length>block.levels[i-1].units.length)throw new Error("Pyramid becomes wider toward the top.");block.levels.forEach(level=>{if(new Set(level.units.map(u=>u.orientation)).size!==1)throw new Error("Cups on the same pyramid level must share the same orientation.");if(new Set(level.units.map(u=>u.colors.length)).size!==1)throw new Error("Nested groups on the same pyramid level must have equal nesting depth.")})}});return true}
+function generateDeck(){const total=questionCount();deck=[];for(let i=0;i<total;i++)deck.push(generateQuestion());currentIndex=0;renderCurrent();setStatus("New set generated.")}
+function svgEl(name,attrs={}){const e=document.createElementNS(SVG_NS,name);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));return e}
+function cupPoints(cx,cy,orientation,scale=1){const top=CUP.topWidth*scale,bottom=CUP.bottomWidth*scale,h=CUP.height*scale;const pts=orientation==="normal"?[[cx-top/2,cy],[cx+top/2,cy],[cx+bottom/2,cy+h],[cx-bottom/2,cy+h]]:[[cx-bottom/2,cy],[cx+bottom/2,cy],[cx+top/2,cy+h],[cx-top/2,cy+h]];return pts.map(p=>p.join(",")).join(" ")}
+function drawUnit(group,unit,cx,cy,scale=1){unit.colors.forEach((color,i)=>{const s=scale*(1-i*.16),shift=CUP.height*scale*i*.09,y=unit.orientation==="normal"?cy+shift:cy-shift;group.appendChild(svgEl("polygon",{points:cupPoints(cx,y,unit.orientation,s),fill:color.hex,stroke:"#111827","stroke-width":Math.max(1.5,CUP.stroke*scale),"stroke-linejoin":"round"}))})}
+function blockDimensions(block){const pitchX=76,pitchY=72,cupW=90,cupH=74;if(block.type==="standalone")return{w:cupW,h:cupH};if(block.type==="tower")return{w:cupW,h:cupH+(block.units.length-1)*pitchY};const maxPositions=Math.max(...block.levels.map(level=>level.units.length));return{w:cupW+(maxPositions-1)*pitchX,h:cupH+(block.levels.length-1)*pitchY}}
+function renderBlock(group,block,cx,topY,scale){const pitchX=76*scale,pitchY=72*scale;if(block.type==="standalone"){drawUnit(group,block.units[0],cx,topY,scale);return}if(block.type==="tower"){const bottomY=topY+(block.units.length-1)*pitchY;block.units.forEach((unit,i)=>drawUnit(group,unit,cx,bottomY-i*pitchY,scale));return}const bottomY=topY+(block.levels.length-1)*pitchY;block.levels.forEach((level,li)=>{const y=bottomY-li*pitchY,startX=cx-((level.units.length-1)*pitchX)/2;level.units.forEach((unit,pi)=>drawUnit(group,unit,startX+pi*pitchX,y,scale))})}
+function renderCurrent(){if(!deck.length)return;const q=deck[currentIndex];board.innerHTML="";errorBox.classList.remove("show");errorBox.textContent="";board.appendChild(svgEl("rect",{x:0,y:0,width:900,height:620,fill:"#fff"}));const dims=q.blocks.map(blockDimensions),gap=50,naturalW=dims.reduce((s,d)=>s+d.w,0)+gap*(q.blocks.length-1),naturalH=Math.max(...dims.map(d=>d.h));let scale=Math.min(1.35,780/Math.max(naturalW,1),500/Math.max(naturalH,1));scale=Math.max(.58,scale);const totalW=dims.reduce((s,d)=>s+d.w*scale,0)+gap*scale*(q.blocks.length-1);let cursorX=450-totalW/2;q.blocks.forEach((block,i)=>{const d=dims[i],blockW=d.w*scale,blockH=d.h*scale,cx=cursorX+blockW/2,topY=510-blockH,g=svgEl("g");renderBlock(g,block,cx,topY,scale);board.appendChild(g);cursorX+=blockW+gap*scale});qno.textContent=`#${currentIndex+1} / ${deck.length}`}
+function setStatus(message){status.textContent=message;clearTimeout(setStatus.timer);setStatus.timer=setTimeout(()=>{status.textContent="Swipe left = next · swipe right = previous · keyboard ← previous / → next"},1400)}
+function safeGenerateDeck(){try{errorBox.classList.remove("show");generateDeck()}catch(err){console.error(err);errorBox.textContent="Generation error: "+err.message;errorBox.classList.add("show")}}
+function nextQuestion(){if(currentIndex<deck.length-1){currentIndex++;renderCurrent()}else setStatus("Last question in this set.")}
+function previousQuestion(){if(currentIndex>0){currentIndex--;renderCurrent()}else setStatus("First question in this set.")}
+document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentMode=btn.dataset.mode;manualPanel.classList.toggle("show",currentMode==="manual");safeGenerateDeck()}));
+function bindRange(id,outId){const input=document.getElementById(id),output=document.getElementById(outId),refresh=()=>output.textContent=input.value;input.addEventListener("input",refresh);refresh()}
+bindRange("cupCount","cupCountVal");bindRange("blockCount","blockCountVal");bindRange("maxLevels","maxLevelsVal");
+document.getElementById("cupCount").addEventListener("input",e=>{const blocks=document.getElementById("blockCount");blocks.max=e.target.value;if(Number(blocks.value)>Number(e.target.value))blocks.value=e.target.value;document.getElementById("blockCountVal").textContent=blocks.value});
+document.getElementById("manualGenerate").addEventListener("click",safeGenerateDeck);document.getElementById("newSet").addEventListener("click",safeGenerateDeck);questionCountInput.addEventListener("keydown",e=>{if(e.key==="Enter")safeGenerateDeck()});
+stage.addEventListener("pointerdown",e=>{dragStartX=e.clientX;if(stage.setPointerCapture)stage.setPointerCapture(e.pointerId)});
+stage.addEventListener("pointerup",e=>{if(dragStartX===null)return;const dx=e.clientX-dragStartX;dragStartX=null;if(dx<=-50)nextQuestion();else if(dx>=50)previousQuestion()});stage.addEventListener("pointercancel",()=>dragStartX=null);
+window.addEventListener("keydown",e=>{const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;if(e.key==="ArrowLeft"){e.preventDefault();previousQuestion()}if(e.key==="ArrowRight"){e.preventDefault();nextQuestion()}});
+safeGenerateDeck();
 })();
 </script>
 </body>
