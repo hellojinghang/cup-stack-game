@@ -1,22 +1,18 @@
-Cup Stack Challenge v1.1
+Cup Stack Challenge v1.2
 
-FREE GITHUB PAGES DEPLOYMENT
-1. Create a public GitHub repository named cup-stack-game.
-2. Upload ONLY index.html to the repository root.
-3. Open GitHub repository > Settings > Pages.
-4. Under Build and deployment, choose "Deploy from a branch".
-5. Branch: main.
-6. Folder: /(root).
-7. Save.
-8. After deployment completes, open the GitHub Pages URL.
+Changes:
+- Full-screen responsive layout; the page itself no longer needs vertical scrolling.
+- Swipe left = next question; swipe right = previous question.
+- Keyboard Left Arrow = previous; Right Arrow = next.
+- Configurable question count from 1 to 100.
+- Questions are generated as a finite deck, so previous questions are preserved.
+- Same-orientation cups are never separate vertical stack positions. They are nested instead.
+- Question counter shows current / total, e.g. #7 / 20.
 
-The app is fully static:
-- no server
-- no database
-- no paid API
-- no package manager
-- no JavaScript libraries
-- no external images
+GitHub Pages deployment:
+1. Replace your old index.html with the new index.html.
+2. Commit the change.
+3. If GitHub Pages is already enabled, it will redeploy automatically.
+4. After the Actions deployment is green, hard refresh the site.
 
-If you are replacing an older version, delete the old .js/.css files or leave them unused.
-The new index.html does not reference them.
+No backend, database, paid API, package manager, or external library is required.
