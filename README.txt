@@ -1,13 +1,11 @@
-Cup Stack Challenge v1.4
+Cup Stack Challenge v1.5
 
-NEW IN v1.4
-- Multiple independent blocks share the same bottom baseline.
-- Level 1 of every block is horizontally aligned.
-- Level 2 aligns with Level 2 when another block also has a Level 2.
-- Shorter blocks are no longer vertically centered beside taller blocks.
-- Dynamic screen-filling scaling from v1.3 is retained.
-- Swipe, keyboard navigation, question count, difficulty modes, manual mode,
-  nesting, and pyramid rules are retained.
+NEW IN v1.5
+- Normal nested cups now match your reference image.
+- Every normal nested cup is shown as visible colored trapezium layers.
+- The deepest inner cup fills the larger lower body area.
+- Inverted nested cups keep the previous layered style.
+- All v1.4 behavior is retained.
 
 UPDATE GITHUB PAGES
 1. Unzip this file.
@@ -17,5 +15,3 @@ UPDATE GITHUB PAGES
 5. Hard-refresh:
    Windows: Ctrl + Shift + R
    Mac: Command + Shift + R
-
-The app remains fully static and free to host on GitHub Pages.

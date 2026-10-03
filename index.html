@@ -72,7 +72,83 @@ function validateQuestion(q){if(q.blocks.length!==q.blockCount)throw new Error("
 function generateDeck(){const total=questionCount();deck=[];for(let i=0;i<total;i++)deck.push(generateQuestion());currentIndex=0;renderCurrent();setStatus("New set generated.")}
 function svgEl(name,attrs={}){const e=document.createElementNS(SVG_NS,name);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));return e}
 function cupPoints(cx,cy,orientation,scale=1){const top=CUP.topWidth*scale,bottom=CUP.bottomWidth*scale,h=CUP.height*scale;const pts=orientation==="normal"?[[cx-top/2,cy],[cx+top/2,cy],[cx+bottom/2,cy+h],[cx-bottom/2,cy+h]]:[[cx-bottom/2,cy],[cx+bottom/2,cy],[cx+top/2,cy+h],[cx-top/2,cy+h]];return pts.map(p=>p.join(",")).join(" ")}
-function drawUnit(group,unit,cx,cy,scale=1){unit.colors.forEach((color,i)=>{const s=scale*(1-i*.16),shift=CUP.height*scale*i*.09,y=unit.orientation==="normal"?cy+shift:cy-shift;group.appendChild(svgEl("polygon",{points:cupPoints(cx,y,unit.orientation,s),fill:color.hex,stroke:"#111827","stroke-width":Math.max(1.5,CUP.stroke*scale),"stroke-linejoin":"round"}))})}
+function slicePolygonPoints(cx,cy,orientation,scale,y0,y1){
+    const h=CUP.height*scale;
+    const top=CUP.topWidth*scale;
+    const bottom=CUP.bottomWidth*scale;
+
+    function widthAt(t){
+      return orientation==="normal"
+        ? top + (bottom-top)*t
+        : bottom + (top-bottom)*t;
+    }
+
+    const w0=widthAt(y0);
+    const w1=widthAt(y1);
+    const Y0=cy + h*y0;
+    const Y1=cy + h*y1;
+
+    return [
+      [cx-w0/2,Y0],
+      [cx+w0/2,Y0],
+      [cx+w1/2,Y1],
+      [cx-w1/2,Y1]
+    ].map(p=>p.join(",")).join(" ");
+  }
+
+  function drawUnit(group,unit,cx,cy,scale=1){
+    if(unit.colors.length===1){
+      group.appendChild(svgEl("polygon",{
+        points:cupPoints(cx,cy,unit.orientation,scale),
+        fill:unit.colors[0].hex,
+        stroke:"#111827",
+        "stroke-width":Math.max(1.5,CUP.stroke*scale),
+        "stroke-linejoin":"round"
+      }));
+      return;
+    }
+
+    if(unit.orientation==="normal"){
+      const n=unit.colors.length;
+      const topInset=0.05;
+      const bottomInset=0.03;
+      const available=1-topInset-bottomInset;
+
+      const bandFrac=(n===2)
+        ? Math.min(0.26, available*0.34)
+        : Math.min(0.18, (available*0.50)/Math.max(1,n-1));
+
+      const usedByBands=bandFrac*(n-1);
+      const bodyFrac=Math.max(0.22, available-usedByBands);
+
+      let y=topInset;
+      unit.colors.forEach((color,i)=>{
+        const frac=(i<n-1) ? bandFrac : bodyFrac;
+        group.appendChild(svgEl("polygon",{
+          points:slicePolygonPoints(cx,cy,"normal",scale,y,y+frac),
+          fill:color.hex,
+          stroke:"#111827",
+          "stroke-width":Math.max(1.5,CUP.stroke*scale),
+          "stroke-linejoin":"round"
+        }));
+        y += frac;
+      });
+      return;
+    }
+
+    unit.colors.forEach((color,i)=>{
+      const s=scale*(1-i*.16);
+      const shift=CUP.height*scale*i*.09;
+      const y=cy-shift;
+      group.appendChild(svgEl("polygon",{
+        points:cupPoints(cx,y,"inverted",s),
+        fill:color.hex,
+        stroke:"#111827",
+        "stroke-width":Math.max(1.5,CUP.stroke*scale),
+        "stroke-linejoin":"round"
+      }));
+    });
+  }
 function blockDimensions(block){const pitchX=76,pitchY=72,cupW=90,cupH=74;if(block.type==="standalone")return{w:cupW,h:cupH};if(block.type==="tower")return{w:cupW,h:cupH+(block.units.length-1)*pitchY};const maxPositions=Math.max(...block.levels.map(level=>level.units.length));return{w:cupW+(maxPositions-1)*pitchX,h:cupH+(block.levels.length-1)*pitchY}}
 function renderBlock(group,block,cx,topY,scale){const pitchX=76*scale,pitchY=72*scale;if(block.type==="standalone"){drawUnit(group,block.units[0],cx,topY,scale);return}if(block.type==="tower"){const bottomY=topY+(block.units.length-1)*pitchY;block.units.forEach((unit,i)=>drawUnit(group,unit,cx,bottomY-i*pitchY,scale));return}const bottomY=topY+(block.levels.length-1)*pitchY;block.levels.forEach((level,li)=>{const y=bottomY-li*pitchY,startX=cx-((level.units.length-1)*pitchX)/2;level.units.forEach((unit,pi)=>drawUnit(group,unit,startX+pi*pitchX,y,scale))})}
 function renderCurrent(){
